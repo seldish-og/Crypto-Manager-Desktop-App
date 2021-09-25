@@ -34,8 +34,6 @@ class MainView(QMainWindow):
 
     def _drawChart(self):
         vertexes = self.controller.getChartData();
-        print(vertexes)
-        print(vertexes[0].openPrice)
 
         # pixmap = QPixmap(self.drawLable.size())
         # pixmap.fill(QtCore.Qt.transparent)

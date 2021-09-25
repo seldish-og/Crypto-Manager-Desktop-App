@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'c:\Users\79533\Documents\Crypto-Manager-Desktop\chart.ui'
+# Form implementation generated from reading ui file 'c:\Users\79533\Desktop\Crypto-Manager-Desktop-main\res\src\templates\chart.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -41,17 +41,17 @@ class Ui_MainWindow(object):
         self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_2.setSpacing(0)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
-        self.logoLabel = QtWidgets.QLabel(self.currencyFrame)
-        self.logoLabel.setStyleSheet("margin-bottom: 4px;\n"
+        self.label = QtWidgets.QLabel(self.currencyFrame)
+        self.label.setStyleSheet("margin-bottom: 4px;\n"
 "margin-top: 6px;")
-        self.logoLabel.setText("")
-        self.logoLabel.setPixmap(QtGui.QPixmap("c:\\Users\\79533\\Documents\\Crypto-Manager-Desktop\\../bitcoin_chart/bitcoin-coin.png"))
-        self.logoLabel.setObjectName("logoLabel")
-        self.verticalLayout_2.addWidget(self.logoLabel, 0, QtCore.Qt.AlignHCenter|QtCore.Qt.AlignTop)
-        self.symbolLable = QtWidgets.QLabel(self.currencyFrame)
-        self.symbolLable.setStyleSheet("margin-bottom: 36px;")
-        self.symbolLable.setObjectName("symbolLable")
-        self.verticalLayout_2.addWidget(self.symbolLable, 0, QtCore.Qt.AlignHCenter)
+        self.label.setText("")
+        self.label.setPixmap(QtGui.QPixmap(":/images/logo.png"))
+        self.label.setObjectName("label")
+        self.verticalLayout_2.addWidget(self.label, 0, QtCore.Qt.AlignHCenter|QtCore.Qt.AlignTop)
+        self.label_2 = QtWidgets.QLabel(self.currencyFrame)
+        self.label_2.setStyleSheet("margin-bottom: 36px;")
+        self.label_2.setObjectName("label_2")
+        self.verticalLayout_2.addWidget(self.label_2, 0, QtCore.Qt.AlignHCenter)
         self.verticalLayout.addWidget(self.currencyFrame, 0, QtCore.Qt.AlignHCenter|QtCore.Qt.AlignTop)
         self.timestampFrame = QtWidgets.QFrame(self.frame)
         self.timestampFrame.setStyleSheet("QPushButton {\n"
@@ -106,7 +106,7 @@ class Ui_MainWindow(object):
         self.candleChartTypeButton = QtWidgets.QPushButton(self.chatTypeFrame)
         self.candleChartTypeButton.setText("")
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("c:\\Users\\79533\\Documents\\Crypto-Manager-Desktop\\../../Desktop/candle_type.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(":/images/candle_type.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.candleChartTypeButton.setIcon(icon)
         self.candleChartTypeButton.setIconSize(QtCore.QSize(40, 40))
         self.candleChartTypeButton.setObjectName("candleChartTypeButton")
@@ -114,7 +114,7 @@ class Ui_MainWindow(object):
         self.lineChartTypeButton = QtWidgets.QPushButton(self.chatTypeFrame)
         self.lineChartTypeButton.setText("")
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap("c:\\Users\\79533\\Documents\\Crypto-Manager-Desktop\\../../Desktop/line_type.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon1.addPixmap(QtGui.QPixmap(":/images/line_type.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.lineChartTypeButton.setIcon(icon1)
         self.lineChartTypeButton.setIconSize(QtCore.QSize(40, 40))
         self.lineChartTypeButton.setObjectName("lineChartTypeButton")
@@ -145,14 +145,6 @@ class Ui_MainWindow(object):
         self.chartFrame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.chartFrame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.chartFrame.setObjectName("chartFrame")
-        self.verticalLayout_6 = QtWidgets.QVBoxLayout(self.chartFrame)
-        self.verticalLayout_6.setContentsMargins(0, 0, 0, 0)
-        self.verticalLayout_6.setSpacing(0)
-        self.verticalLayout_6.setObjectName("verticalLayout_6")
-        self.drawLable = QtWidgets.QLabel(self.chartFrame)
-        self.drawLable.setText("")
-        self.drawLable.setObjectName("drawLable")
-        self.verticalLayout_6.addWidget(self.drawLable)
         self.horizontalLayout.addWidget(self.chartFrame)
         MainWindow.setCentralWidget(self.centralwidget)
 
@@ -162,9 +154,11 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.symbolLable.setText(_translate("MainWindow", "BTCUSDT"))
+        self.label_2.setText(_translate("MainWindow", "BTCUSDT"))
         self.dayThreeTimestampButton.setText(_translate("MainWindow", "3D"))
         self.dayTimestampButton.setText(_translate("MainWindow", "1D"))
         self.fourHourTimestampButton.setText(_translate("MainWindow", "4h"))
         self.hourTimestampButton.setText(_translate("MainWindow", "1h"))
         self.minuteTimestampButton.setText(_translate("MainWindow", "1m"))
+
+from ..img import resources
