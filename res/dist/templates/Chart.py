@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'chart.ui'
+# Form implementation generated from reading ui file 'c:\Users\79533\Documents\Crypto-Manager-Desktop\res\src\templates\chart.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(824, 600)
+        MainWindow.resize(866, 600)
         MainWindow.setStyleSheet("background-color: #111E2E;\n"
 "border: none;")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
@@ -145,14 +145,6 @@ class Ui_MainWindow(object):
         self.chartFrame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.chartFrame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.chartFrame.setObjectName("chartFrame")
-        self.verticalLayout_6 = QtWidgets.QVBoxLayout(self.chartFrame)
-        self.verticalLayout_6.setContentsMargins(0, 0, 0, 0)
-        self.verticalLayout_6.setSpacing(0)
-        self.verticalLayout_6.setObjectName("verticalLayout_6")
-        self.drawLabel = QtWidgets.QLabel(self.chartFrame)
-        self.drawLabel.setText("")
-        self.drawLabel.setObjectName("drawLabel")
-        self.verticalLayout_6.addWidget(self.drawLabel)
         self.horizontalLayout.addWidget(self.chartFrame)
         MainWindow.setCentralWidget(self.centralwidget)
 

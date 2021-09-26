@@ -1,10 +1,11 @@
+from threading import local
 from PyQt5 import QtCore
-from PyQt5.QtGui import QPainter, QPen, QPixmap
+from PyQt5.QtGui import QColor, QFont, QPainter, QPen, QPixmap
 from models.Line import Line
 import sys
+import time
 
-
-from PyQt5.QtWidgets import QApplication, QMainWindow
+from PyQt5.QtWidgets import QApplication, QBoxLayout, QMainWindow, QVBoxLayout, QWidget
 from res.dist.templates.Chart import Ui_MainWindow as Chart
 # from controllers.ChartController import ChartController
 
@@ -95,11 +96,38 @@ class CandleChartDrawer(LineChartDrawer):
 
 class Loader:
     def __init__(self, painter) -> None:
-        self.painter = painter
+        self._painter = painter
         pass
 
     def runLoader(self):
-        self.painter
+        self._painter
+
+class Canvas(QWidget):
+    data = None
+
+    def __init__(self) -> None:
+        super(Canvas, self).__init__()
+
+    def paintEvent(self, event) -> None:
+        painter = QPainter();
+        painter.begin(self);        
+
+        print("Зашли в пеинтер")
+
+        if Canvas.data == None:
+            print("Дата еще не прилетела")
+            return;
+
+        GridDrawer(painter).draw(Canvas.data)
+        LineChartDrawer(painter).draw(Canvas.data)
+
+        painter.end();
+
+    def updateCanvas(self):
+        self.update()
+
+    def setData(self, data):
+        Canvas.data = data
 
 
 class MainView(QMainWindow):
@@ -109,23 +137,18 @@ class MainView(QMainWindow):
         self.chart = Chart()
         self.chart.setupUi(self)
         self.showMaximized()
+        self.createCanvas()
 
-    def createPainter(self):
-        screen = QApplication.primaryScreen()
-        print(screen.size())
-        self.pixmap = QPixmap(self.chart.drawLabel.size())
-        self.pixmap = self.pixmap.scaledToHeight(screen.size().height())
-        self.pixmap = self.pixmap.scaledToWidth(screen.size().width())
-        self.pixmap.fill(QtCore.Qt.transparent)
-        self.painter = QPainter(self.pixmap)
-        print(self.pixmap.width())
-        print(self.chart.drawLabel.frameGeometry().width())
+    def createCanvas(self):
+        self._canvas = Canvas()
+        layout = QVBoxLayout()
+        layout.addWidget(self._canvas)
+        self.chart.chartFrame.setLayout(layout)
 
-    def closePainter(self):
-        self.painter.end()
+    def updateCanvas(self):
+        self._canvas.updateCanvas()
+    
+    def setCanvasData(self, data):
+        self._canvas.setData(data)
 
-    def setPainter(self):
-        self.chart.drawLabel.setPixmap(self.pixmap)
 
-    def clearPainter(self):
-        self.chart.drawLabel.clear()

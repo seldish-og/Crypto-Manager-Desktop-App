@@ -35,56 +35,20 @@ class ChartController:
         self._chartRepository = ChartRepository()
         self._vertexesFactory = VertexesFactory()
 
-        self._view = MainView()
-
-        # иницилизация пиксмапа
-        self._view.createPainter()
-
-        self._states = {
-            "loader": Loader(self._view.painter),
-            "connectionChart": self.getChartData,
-            "gridDrawer": GridDrawer(self._view.painter).draw,
-            "vertexDrawer": LineChartDrawer(self._view.painter).draw,
-        }
-
-        # поток отрисовки графика
-        thread_chart_drawer = threading.Thread(target=self.runChart, args=())
+        thread_chart_drawer = threading.Thread(target=self._runChart, args=())
         thread_chart_drawer.start()
 
-        # # логика отрисовки
-        # self._view.closePainter()
+        self._view = MainView()
 
 
-    def runChart(self):
+    def _runChart(self):
+        data = self._getChartData()
+        data.reverse()
 
-        self.data = None
+        self._view.setCanvasData(data)
+        self._view.updateCanvas()
 
-        self._view.clearPainter()
-
-        for state in self._states.keys():
-
-            action = self._states[state]
-
-            if state == "loader":
-                pass
-
-            if state == "connectionChart":
-                self.data = action()
-                self.data.reverse()
-
-            if state == "gridDrawer":
-                if not self.data:
-                    print("data is None")
-                    return
-
-                action(self.data)
-
-            if state == "vertexDrawer":
-                action(self.data)
-
-        self._view.setPainter()
-
-    def getChartData(self):
+    def _getChartData(self):
         data = self._chartRepository.getRemoteData()
         return self._vertexesFactory.createVertexes(json.loads(data))
 
