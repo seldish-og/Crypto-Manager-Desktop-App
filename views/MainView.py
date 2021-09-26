@@ -112,10 +112,7 @@ class Canvas(QWidget):
         painter = QPainter();
         painter.begin(self);        
 
-        print("Зашли в пеинтер")
-
         if Canvas.data == None:
-            print("Дата еще не прилетела")
             return;
 
         GridDrawer(painter).draw(Canvas.data)
