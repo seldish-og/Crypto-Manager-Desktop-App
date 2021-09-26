@@ -44,18 +44,16 @@ class ChartController:
             "loader": Loader(self._view.painter),
             "connectionChart": self.getChartData,
             "gridDrawer": GridDrawer(self._view.painter).draw,
-            "vertexDrawer": LineChartDrawer(self._view.painter),
+            "vertexDrawer": LineChartDrawer(self._view.painter).draw,
         }
 
         # поток отрисовки графика
         thread_chart_drawer = threading.Thread(target=self.runChart, args=())
         thread_chart_drawer.start()
 
-        # логика отрисовки
-        self._view.closePainter()
+        # # логика отрисовки
+        # self._view.closePainter()
 
-        # установка пиксмапа
-        self._view.setPainter()
 
     def runChart(self):
 
@@ -72,6 +70,7 @@ class ChartController:
 
             if state == "connectionChart":
                 self.data = action()
+                self.data.reverse()
 
             if state == "gridDrawer":
                 if not self.data:
@@ -81,7 +80,9 @@ class ChartController:
                 action(self.data)
 
             if state == "vertexDrawer":
-                pass
+                action(self.data)
+
+        self._view.setPainter()
 
     def getChartData(self):
         data = self._chartRepository.getRemoteData()

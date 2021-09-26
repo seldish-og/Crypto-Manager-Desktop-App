@@ -6,5 +6,5 @@ class Candle(Line):
 
 	def __init__(self, data):
 		super().__init__(data);
-		self.maximalPrice = data[2] 
-		self.minimalPrice = data[3]
+		self.maximalPrice = float(data[2])
+		self.minimalPrice = float(data[3])
