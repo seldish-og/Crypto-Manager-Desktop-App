@@ -92,7 +92,7 @@ border: none;</string>
            <number>0</number>
           </property>
           <item alignment="Qt::AlignHCenter|Qt::AlignTop">
-           <widget class="QLabel" name="label">
+           <widget class="QLabel" name="logo">
             <property name="styleSheet">
              <string notr="true">margin-bottom: 4px;
 margin-top: 6px;</string>
@@ -106,7 +106,7 @@ margin-top: 6px;</string>
            </widget>
           </item>
           <item alignment="Qt::AlignHCenter">
-           <widget class="QLabel" name="label_2">
+           <widget class="QLabel" name="symbol">
             <property name="styleSheet">
              <string notr="true">margin-bottom: 36px;</string>
             </property>
@@ -320,6 +320,30 @@ margin-bottom: 53px;</string>
       <property name="frameShadow">
        <enum>QFrame::Raised</enum>
       </property>
+      <layout class="QVBoxLayout" name="verticalLayout_6">
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QLabel" name="drawLabel">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </widget>
     </item>
    </layout>

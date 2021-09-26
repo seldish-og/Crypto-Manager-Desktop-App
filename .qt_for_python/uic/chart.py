@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'chart.ui'
+# Form implementation generated from reading ui file 'c:\Users\79533\Documents\Crypto-Manager-Desktop\res\src\templates\chart.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -168,5 +168,4 @@ class Ui_MainWindow(object):
         self.fourHourTimestampButton.setText(_translate("MainWindow", "4h"))
         self.hourTimestampButton.setText(_translate("MainWindow", "1h"))
         self.minuteTimestampButton.setText(_translate("MainWindow", "1m"))
-
-from ..img import resources
+import resources_rc
