@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>824</width>
+    <width>866</width>
     <height>600</height>
    </rect>
   </property>
@@ -92,7 +92,7 @@ border: none;</string>
            <number>0</number>
           </property>
           <item alignment="Qt::AlignHCenter|Qt::AlignTop">
-           <widget class="QLabel" name="logoLabel">
+           <widget class="QLabel" name="logo">
             <property name="styleSheet">
              <string notr="true">margin-bottom: 4px;
 margin-top: 6px;</string>
@@ -101,12 +101,12 @@ margin-top: 6px;</string>
              <string/>
             </property>
             <property name="pixmap">
-             <pixmap>../bitcoin_chart/bitcoin-coin.png</pixmap>
+             <pixmap resource="../img/resources.qrc">:/images/logo.png</pixmap>
             </property>
            </widget>
           </item>
           <item alignment="Qt::AlignHCenter">
-           <widget class="QLabel" name="symbolLable">
+           <widget class="QLabel" name="symbol">
             <property name="styleSheet">
              <string notr="true">margin-bottom: 36px;</string>
             </property>
@@ -235,8 +235,8 @@ margin-bottom: 53px;</string>
              <string/>
             </property>
             <property name="icon">
-             <iconset>
-              <normaloff>../../Desktop/candle_type.svg</normaloff>../../Desktop/candle_type.svg</iconset>
+             <iconset resource="../img/resources.qrc">
+              <normaloff>:/images/candle_type.svg</normaloff>:/images/candle_type.svg</iconset>
             </property>
             <property name="iconSize">
              <size>
@@ -252,8 +252,8 @@ margin-bottom: 53px;</string>
              <string/>
             </property>
             <property name="icon">
-             <iconset>
-              <normaloff>../../Desktop/line_type.svg</normaloff>../../Desktop/line_type.svg</iconset>
+             <iconset resource="../img/resources.qrc">
+              <normaloff>:/images/line_type.svg</normaloff>:/images/line_type.svg</iconset>
             </property>
             <property name="iconSize">
              <size>
@@ -320,35 +320,13 @@ margin-bottom: 53px;</string>
       <property name="frameShadow">
        <enum>QFrame::Raised</enum>
       </property>
-      <layout class="QVBoxLayout" name="verticalLayout_6">
-       <property name="spacing">
-        <number>0</number>
-       </property>
-       <property name="leftMargin">
-        <number>0</number>
-       </property>
-       <property name="topMargin">
-        <number>0</number>
-       </property>
-       <property name="rightMargin">
-        <number>0</number>
-       </property>
-       <property name="bottomMargin">
-        <number>0</number>
-       </property>
-       <item>
-        <widget class="QLabel" name="drawLable">
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-       </item>
-      </layout>
      </widget>
     </item>
    </layout>
   </widget>
  </widget>
- <resources/>
+ <resources>
+  <include location="../img/resources.qrc"/>
+ </resources>
  <connections/>
 </ui>
