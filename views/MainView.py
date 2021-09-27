@@ -17,13 +17,13 @@ class GridDrawer:
         self.height = painter.device().height()
         self.width = painter.device().width()
 
-        print(self.height, self.width)
-
         self.minimalGridHeight = 40
 
         self.gridAmount = self.height // self.minimalGridHeight
 
         self.paddingVertical = self.height / 10 
+
+        self.paddingHorizontal = self.width / 8
 
     def calculateVerticalProsition(self, price):
         if not price:
@@ -61,10 +61,10 @@ class GridDrawer:
         return vertex.width
 
     def getVertexesAmount(self, vertexes, width) -> int:
-        if (len(vertexes) > self.width // width + 1):
-            return self.width // width + 1
+        if (len(vertexes) > (self.width - self.paddingHorizontal) // width + 1):
+            return int((self.width - self.paddingHorizontal) // width + 1)
         else:
-            return len(vertexes)
+            return int(len(vertexes))
 
     def draw(self, data):
         self.getMaxMinValue(data)
@@ -92,9 +92,7 @@ class LineChartDrawer(GridDrawer):
         self.painter.drawText(self.width - fm.width(text), (self.calculateVerticalProsition(vertex.closePrice) - fm.height() / 2), text);
 
     def draw(self, data):
-
-        vertexes_amount = self.getVertexesAmount(
-            data, self.getVertexWidth(data[0]))
+        vertexes_amount = self.getVertexesAmount(data, self.getVertexWidth(data[0]))
         self.getMaxMinValue(data, vertexes_amount)
 
         for i in range(1, vertexes_amount):
@@ -102,14 +100,14 @@ class LineChartDrawer(GridDrawer):
             self.painter.setPen(pen)
 
             self.painter.drawLine(
-                self.width - i * data[i].width,
+                self.width - self.paddingHorizontal - i * data[i].width,
                 self.calculateVerticalProsition(data[i].openPrice),
-                self.width - (i - 1) * data[i].width,
+                self.width - self.paddingHorizontal - (i - 1) * data[i].width,
                 self.calculateVerticalProsition(data[i].closePrice),
             )
 
             if (i == 1):
-                self.drawLine(data[i])
+                self.drawLine(data[0])
 
 
 class CandleChartDrawer(LineChartDrawer):
@@ -118,19 +116,37 @@ class CandleChartDrawer(LineChartDrawer):
 
     def draw(self, data):
 
-        vertexes_amount = self.getVertexesAmount(
-            data, self.getVertexWidth(data[0]))
+        vertexes_amount = self.getVertexesAmount(data, self.getVertexWidth(data[0]))
         self.getMaxMinValue(data, vertexes_amount)
 
         for i in range(0, vertexes_amount):
-            pen = QPen(QColor("#00D3FF"), 3)
+            if (i == 0):
+                self.drawLine(data[0])
+
+            pen = QPen(QColor("#26a69a"), data[i].width - 2)
+
+            if (data[i].openPrice > data[i].closePrice):
+                pen = QPen(QColor("#ef5350"), data[i].width - 2)
+
             self.painter.setPen(pen)
+
             self.painter.drawLine(
-                self.width - i * data[i].width,
+                self.width - self.paddingHorizontal - i * data[i].width,
                 self.calculateVerticalProsition(data[i].openPrice),
-                self.width - (i - 1) * data[i].width,
+                self.width - self.paddingHorizontal - (i) * data[i].width,
                 self.calculateVerticalProsition(data[i].closePrice),
             )
+
+            pen.setWidth(1)
+            self.painter.setPen(pen)
+
+            self.painter.drawLine(
+                self.width - self.paddingHorizontal - i * data[i].width,
+                self.calculateVerticalProsition(data[i].minimalPrice),
+                self.width - self.paddingHorizontal - i * data[i].width,
+                self.calculateVerticalProsition(data[i].maximalPrice),
+            )
+
 
 class Loader:
     def __init__(self, painter) -> None:
@@ -153,8 +169,11 @@ class Canvas(QWidget):
         if Canvas.data == None:
             return;
 
-        GridDrawer(painter).draw(Canvas.data)
-        LineChartDrawer(painter).draw(Canvas.data)
+        try:
+            self.states["gridDrawer"](painter).draw(Canvas.data)
+            self.states["vertexDrawer"](painter).draw(Canvas.data)
+        except TypeError:
+            raise Exception("Не прилетели у нас состояния")
 
         painter.end();
 
@@ -163,6 +182,9 @@ class Canvas(QWidget):
 
     def setData(self, data):
         Canvas.data = data
+
+    def setStates(self, states):
+        self.states = states
 
 
 class MainView(QMainWindow):
@@ -188,5 +210,8 @@ class MainView(QMainWindow):
     
     def setCanvasData(self, data):
         self._canvas.setData(data)
+
+    def setCanvasStates(self, states):
+        self._canvas.setStates(states)
 
 

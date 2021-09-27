@@ -7,7 +7,7 @@ from models.Candle import Candle
 from models.Line import Line
 from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtGui import QPainter, QPen, QPixmap
-from views.MainView import GridDrawer, LineChartDrawer, Loader, MainView
+from views.MainView import CandleChartDrawer, GridDrawer, LineChartDrawer, Loader, MainView
 
 from repository.ChartRepository import ChartRepository
 import time
@@ -40,13 +40,34 @@ class ChartController:
 
         self._view = MainView()
 
+        self.states = {
+            "gridDrawer": GridDrawer,
+            "vertexDrawer": CandleChartDrawer,
+        }
+
+        self._init()
+
+    def _init(self):
+        self._view.chart.candleChartTypeButton.clicked.connect(self.changeVertexesTypeCandle)
+        self._view.chart.lineChartTypeButton.clicked.connect(self.changeVertexesTypeLine)
+
+    def changeVertexesTypeCandle(self):
+        self.states["vertexDrawer"] = CandleChartDrawer
+
+    def changeVertexesTypeLine(self):
+        self.states["vertexDrawer"] = LineChartDrawer
 
     def _runChart(self):
+
         data = self._getChartData()
         data.reverse()
 
+        self._view.setCanvasStates(self.states)
         self._view.setCanvasData(data)
         self._view.updateCanvas()
+
+        time.sleep(1)
+        self._runChart()
 
     def _getChartData(self):
         data = self._chartRepository.getRemoteData()
