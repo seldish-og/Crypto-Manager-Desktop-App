@@ -160,5 +160,4 @@ class Ui_MainWindow(object):
         self.fourHourTimestampButton.setText(_translate("MainWindow", "4h"))
         self.hourTimestampButton.setText(_translate("MainWindow", "1h"))
         self.minuteTimestampButton.setText(_translate("MainWindow", "1m"))
-
-from ..img import resources
+import resources_rc

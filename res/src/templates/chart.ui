@@ -163,14 +163,14 @@ QPushButton:focus {
              </sizepolicy>
             </property>
             <property name="text">
-             <string>3D</string>
+             <string>3d</string>
             </property>
            </widget>
           </item>
           <item>
            <widget class="QPushButton" name="dayTimestampButton">
             <property name="text">
-             <string>1D</string>
+             <string>1d</string>
             </property>
            </widget>
           </item>

@@ -1,4 +1,5 @@
 import json
+from repository.Connection import Connection
 import sys
 import asyncio
 import threading
@@ -48,14 +49,23 @@ class ChartController:
         self._init()
 
     def _init(self):
-        self._view.chart.candleChartTypeButton.clicked.connect(self.changeVertexesTypeCandle)
-        self._view.chart.lineChartTypeButton.clicked.connect(self.changeVertexesTypeLine)
+        self._view.chart.candleChartTypeButton.clicked.connect(
+            self.changeVertexesTypeCandle)
+        self._view.chart.lineChartTypeButton.clicked.connect(
+            self.changeVertexesTypeLine)
+        for i in self._view.chart.timestampFrame.children():
+            if isinstance(i, QtWidgets.QPushButton):
+                i.clicked.connect(self.changeTypeStamp)
 
     def changeVertexesTypeCandle(self):
         self.states["vertexDrawer"] = CandleChartDrawer
 
     def changeVertexesTypeLine(self):
         self.states["vertexDrawer"] = LineChartDrawer
+
+    def changeTypeStamp(self):
+        sender = self._view.sender()
+        Connection.updateTimeStamp(sender.text())
 
     def _runChart(self):
 
