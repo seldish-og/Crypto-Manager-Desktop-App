@@ -10,3 +10,7 @@ class Connection:
 	def updateTimeStamp(timeStamp):
 		Connection.FETCH_CHART_URL = re.sub(r"interval=[A-Za-z0-9]+", "interval=" + timeStamp, Connection.FETCH_CHART_URL)
 		print(Connection.FETCH_CHART_URL, timeStamp)
+
+	@staticmethod
+	def updateCurrency(currency):
+		Connection.FETCH_CHART_URL = re.sub(r"symbol=[A-Za-z0-9]+\&", "symbol=" + currency, Connection.FETCH_CHART_URL)
