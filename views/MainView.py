@@ -142,10 +142,10 @@ class CandleChartDrawer(LineChartDrawer):
             if (i == 0):
                 self.drawLine(data[0])
 
-            pen = QPen(QColor("#26a69a"), data[i].width - 2)
+            pen = QPen(QColor("#26a69a"), data[i].width - 3)
 
             if (data[i].openPrice > data[i].closePrice):
-                pen = QPen(QColor("#ef5350"), data[i].width - 2)
+                pen = QPen(QColor("#ef5350"), data[i].width - 3)
 
             self.painter.setPen(pen)
 
