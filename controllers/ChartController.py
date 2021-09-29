@@ -15,16 +15,17 @@ import time
 
 
 class VertexesFactory:
+    Type = Line
 
     def __init__(self) -> None:
         self.newVertexes = []
 
-    def createVertex(self, vertex, type=Candle):
+    def createVertex(self, vertex):
         return type(vertex)
 
-    def createVertexes(self, vertexes, type=Candle):
+    def createVertexes(self, vertexes):
         for i in vertexes:
-            self.newVertexes.append(type(i))
+            self.newVertexes.append(VertexesFactory.Type(i))
         return self.newVertexes
 
 
@@ -43,7 +44,7 @@ class ChartController:
 
         self.states = {
             "gridDrawer": GridDrawer,
-            "vertexDrawer": CandleChartDrawer,
+            "vertexDrawer": LineChartDrawer,
         }
 
         self._init()
@@ -58,9 +59,11 @@ class ChartController:
                 i.clicked.connect(self.changeTypeStamp)
 
     def changeVertexesTypeCandle(self):
+        VertexesFactory.Type = Candle
         self.states["vertexDrawer"] = CandleChartDrawer
 
     def changeVertexesTypeLine(self):
+        VertexesFactory.Type = Line
         self.states["vertexDrawer"] = LineChartDrawer
 
     def changeTypeStamp(self):
@@ -78,6 +81,7 @@ class ChartController:
 
         time.sleep(1)
         self._runChart()
+
 
     def _getChartData(self):
         data = self._chartRepository.getRemoteData()
