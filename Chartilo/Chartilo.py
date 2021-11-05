@@ -166,27 +166,28 @@ class GridDrawer(LimitDrawer):
         self.gridAmount = self.height // self.minimalGridHeight
 
     def draw(self, data):
-        print("Grid drawer:", Drawer.maximalValue, Drawer.minimalValue)
 
         gridSettings = NiceScale(Drawer.minimalValue, Drawer.maximalValue)
-        # print("a.lst ", gridSettings.lst)
-        # print("a.maxPoint ", gridSettings.maxPoint)
-        # print("a.maxTicks ", gridSettings.maxTicks)
-        # print("a.minPoint ", gridSettings.minPoint)
-        # print("a.niceMax ", gridSettings.niceMax)
-        # print("a.niceMin ", gridSettings.niceMin)
-        # print("a.tickSpacing ", gridSettings.tickSpacing)
+        print("a.lst ", gridSettings.lst)
+        print("a.maxPoint ", gridSettings.maxPoint)
+        print("a.maxTicks ", gridSettings.maxTicks)
+        print("a.minPoint ", gridSettings.minPoint)
+        print("a.niceMax ", gridSettings.niceMax)
+        print("a.niceMin ", gridSettings.niceMin)
+        print("a.tickSpacing ", gridSettings.tickSpacing)
 
         maximalLength = len(str(Decimal(Drawer.maximalValue) % 1)[:2])
 
         grid = []
-        for i in range(gridSettings.maxTicks + 1):
+        for i in range(gridSettings.maxTicks * -2, gridSettings.maxTicks * 2):
             grid.append(float(Decimal(str(gridSettings.niceMin)) +
                         Decimal(str(i)) * Decimal(str(gridSettings.tickSpacing))))
 
         for i in grid:
             if (len(str(Decimal(str(i)) % 1)) - 2 > maximalLength):
                 maximalLength = len(str(Decimal(str(i)) % 1)) - 2
+
+        print(grid)
 
         for i in grid:
             pen = QPen(QColor(204, 204, 204, 50), 1)
@@ -299,7 +300,6 @@ class LineChartDrawer(LimitDrawer):
         vertexes_amount = self.getVertexesAmount(
             data, 7, self.width - ChartPositioner.paddingHorizontal)
         # data = data[0:vertexes_amount]
-        print("Line chart drawer: ", Drawer.maximalValue, Drawer.minimalValue)
         # print(self.maximalValue, self.minimalValue)
 
         for i in range(0, vertexes_amount - 1):
