@@ -1,6 +1,5 @@
 import numpy as np
+from decimal import Decimal
 
-s = (np.linspace(60132, 62933, 16))
-
-for i in s:
-	print(i)
+a= Decimal('4.20') % 1
+print(len(str(a)[2:]))

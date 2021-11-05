@@ -32,7 +32,10 @@ class ChartController:
         self._view = MainView()
 
         self.states = {
-            "drawers": [GridDrawer, LineChartDrawer]
+            "drawers": {
+                "grid" : GridDrawer, 
+                "vertex" : LineChartDrawer
+            }
         } 
 
         self._init()
@@ -49,11 +52,11 @@ class ChartController:
 
     def changeVertexesTypeCandle(self):
         VertexesFactory.Type = Candle
-        self.states["vertexDrawer"] = CandleChartDrawer
+        self.states["drawers"]["vertex"] = CandleChartDrawer
 
     def changeVertexesTypeLine(self):
         VertexesFactory.Type = Line
-        self.states["vertexDrawer"] = LineChartDrawer
+        self.states["drawers"]["vertex"] = LineChartDrawer
 
     def changeTypeStamp(self):
         sender = self._view.sender()

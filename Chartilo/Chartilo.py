@@ -8,8 +8,6 @@ from .models import Candle
 from decimal import Decimal
 import math
 
-import math
-
 class NiceScale:
     def __init__(self, minv, maxv):
         self.maxTicks = 6
@@ -70,45 +68,6 @@ class NiceScale:
         self.calculate()
 
 
-def BestTick2(largest, mostticks= 10):
-    minimum = largest / mostticks
-    magnitude = 10 ** math.floor(math.log(minimum, 10))
-    residual = minimum / magnitude
-    # this table must begin with 1 and end with 10
-    table = [1, 1.5, 2, 3, 5, 7, 10]
-    tick = table[bisect.bisect_right(table, residual)] if residual < 10 else 10
-    return tick * magnitude
-
-
-def BestTick(largest, mostticks):
-    minimum = largest / mostticks
-    magnitude = 10 ** math.floor(math.log(minimum, 10))
-    residual = minimum / magnitude
-    if residual > 5:
-        tick = 10 * magnitude
-    elif residual > 2:
-        tick = 5 * magnitude
-    elif residual > 1:
-        tick = 2 * magnitude
-    else:
-        tick = magnitude
-    return tick
-
-
-
-
-def create_ticks(lo, hi):
-    s = 10**(np.floor(np.log10(hi - lo)))
-    start = s * np.floor(lo / s)
-    end = s * np.ceil(hi / s)
-    ticks = [start]
-    t = start
-    while (t < end):
-        ticks += [t]
-        t = t + s
-
-    return ticks
-
 
 class VertexesFactory:
     Type = Line
@@ -155,7 +114,7 @@ class Drawer:
 
 
 class ChartPositioner:
-    paddingVertical = 60
+    paddingVertical = 120
     paddingHorizontal = 100
 
     @staticmethod
@@ -207,7 +166,7 @@ class GridDrawer(LimitDrawer):
         print("a.niceMin ", a.niceMin)
         print("a.tickSpacing ", a.tickSpacing)
 
-        for i in range(a.maxTicks):
+        for i in range(a.maxTicks + 1):
             pen = QPen(QColor(204, 204, 204, 50), 1)
             self.painter.setPen(pen)
             self.painter.drawLine(
@@ -216,7 +175,10 @@ class GridDrawer(LimitDrawer):
                 self.width,
                 self.getVerticalPosition(a.niceMin + i * a.tickSpacing),
             )
-            text = str(a.niceMin + i * a.tickSpacing)
+            # text = str(Decimal(str(a.niceMin)) + Decimal(str(i * a.tickSpacing)))
+            # print("Text: " + text)
+            maximalLength = len(str(Decimal(self.maximalValue) % 1)[:2])
+            text = str(("{0:." + str(maximalLength) + "f}").format(Decimal(str(a.niceMin)) + Decimal(str(i * a.tickSpacing))))
             font = QFont("times", 8)
             fm = QFontMetrics(font)
             pen = QPen(QColor("#fff"), 2)
@@ -224,28 +186,6 @@ class GridDrawer(LimitDrawer):
             self.painter.setFont(font)
             self.painter.drawText(self.width - fm.width(text),
                                 (self.getVerticalPosition(a.niceMin + i * a.tickSpacing) - fm.height() / 2), text)
-
-
-        # print(BestTick(61324, 16))
-        # grid = np.linspace(self.minimalValue, self.maximalValue, cellAmount)
-
-        # for line in grid:
-        #     pen = QPen(QColor(204, 204, 204, 50), 1)
-        #     self.painter.setPen(pen)
-        #     self.painter.drawLine(
-        #         0,
-        #         self.getVerticalPosition(line),
-        #         self.width,
-        #         self.getVerticalPosition(line),
-        #     )
-        #     text = str(line)
-        #     font = QFont("times", 8)
-        #     fm = QFontMetrics(font)
-        #     pen = QPen(QColor("#fff"), 2)
-        #     self.painter.setPen(pen)
-        #     self.painter.setFont(font)
-        #     self.painter.drawText(self.width - fm.width(text),
-        #                         (self.getVerticalPosition(line) - fm.height() / 2), text)
 
 
 class LineChartDrawer(LimitDrawer):
@@ -380,7 +320,7 @@ class Chartilo(QWidget):
 
         for drawer in self.states["drawers"]:
             try:
-                drawer(painter).draw(Chartilo.data)
+                self.states["drawers"][drawer](painter).draw(Chartilo.data)
             except Exception as e:
                 raise Exception(str(e) + 
                     "\nThere is unexpected drawer: " + str(drawer.__name__))
