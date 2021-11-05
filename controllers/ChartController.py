@@ -1,4 +1,5 @@
 import json
+from Chartilo.Chartilo import MaxMinValuesDrawer
 from repository.Connection import Connection
 import sys
 import asyncio
@@ -11,7 +12,7 @@ from views.MainView import MainView
 from repository.ChartRepository import ChartRepository
 import time
 
-from Chartilo import GridDrawer, LineChartDrawer, VertexesFactory, Candle, Line, CandleChartDrawer
+from Chartilo import GridDrawer, LineChartDrawer, VertexesFactory, Candle, Line, CandleChartDrawer, MaxMinValuesDrawer, LineDrawer
 
 
 class Ass:
@@ -34,7 +35,9 @@ class ChartController:
         self.states = {
             "drawers": {
                 "grid" : GridDrawer, 
-                "vertex" : LineChartDrawer
+                "vertex" : LineChartDrawer,
+                "maxMin" : MaxMinValuesDrawer,
+                "line" : LineDrawer
             }
         } 
 

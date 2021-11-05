@@ -8,6 +8,7 @@ from .models import Candle
 from decimal import Decimal
 import math
 
+
 class NiceScale:
     def __init__(self, minv, maxv):
         self.maxTicks = 6
@@ -25,8 +26,8 @@ class NiceScale:
             self.lst / (self.maxTicks - 1), True)
         self.niceMin = math.floor(
             self.minPoint / self.tickSpacing) * self.tickSpacing
-        self.niceMax = math.ceil(
-            self.maxPoint / self.tickSpacing) * self.tickSpacing
+        self.niceMax = math.ceil(Decimal(str(
+            self.maxPoint)) / Decimal(str(self.tickSpacing))) * Decimal(str(self.tickSpacing))
 
     def niceNum(self, lst, rround):
         self.lst = lst
@@ -68,7 +69,6 @@ class NiceScale:
         self.calculate()
 
 
-
 class VertexesFactory:
     Type = Line
 
@@ -85,13 +85,17 @@ class VertexesFactory:
 
 
 class Drawer:
+    maximalValue = 0
+    minimalValue = 0
+    maxMinDifference = 0
 
     def __init__(self, painter) -> None:
         self.painter = painter
         self.height = painter.device().height()
         self.width = painter.device().width()
 
-    def setMaxMinValue(self, data) -> None:
+    @staticmethod
+    def setMaxMinValue(data) -> None:
         minimum = float('inf')
         maximum = float('-inf')
 
@@ -105,17 +109,17 @@ class Drawer:
                 if float(vertex.get(vertex_field)) > maximum:
                     maximum = vertex.get(vertex_field)
 
-        self.maximalValue = maximum
-        self.minimalValue = minimum
-        self.maxMinDifference = maximum - minimum
+        Drawer.maximalValue = maximum
+        Drawer.minimalValue = minimum
+        Drawer.maxMinDifference = maximum - minimum
 
     def getVerticalPosition(self, price) -> float:
-        return self.height - ChartPositioner.paddingVertical - (self.maxMinDifference - (self.maximalValue - price)) / self.maxMinDifference * (self.height - 2 * ChartPositioner.paddingVertical)
+        return self.height - ChartPositioner.paddingVertical - (Drawer.maxMinDifference - (Drawer.maximalValue - price)) / Drawer.maxMinDifference * (self.height - 2 * ChartPositioner.paddingVertical)
 
 
 class ChartPositioner:
     paddingVertical = 120
-    paddingHorizontal = 100
+    paddingHorizontal = 71
 
     @staticmethod
     def setPaddingVertical(padding) -> None:
@@ -127,17 +131,30 @@ class ChartPositioner:
 
 
 class LimitDrawer(Drawer):
+    drawableData = []
 
     def __init__(self, painter) -> None:
         super().__init__(painter)
         pass
 
     @staticmethod
-    def getVertexesAmount(vertexes, width, screenWidth) -> int:
-        if (len(vertexes) > screenWidth // width + 1):
-            return screenWidth // width + 1
+    def getVertexesAmount(vertexes, vertexWidth, screenWidth, horizontalMargin=0) -> int:
+        localMargin = horizontalMargin
+        if (localMargin < 0):
+            localMargin = 0
+
+        if (len(vertexes) > (screenWidth - horizontalMargin) // vertexWidth + 1):
+            return screenWidth // vertexWidth + 1
         else:
             return int(len(vertexes))
+
+    @staticmethod
+    def setDrawableData(data):
+        LimitDrawer.drawableData = data
+
+    @staticmethod
+    def calculateDrawableData(data, startPosition, endPosition):
+        return data[startPosition:endPosition]
 
 
 class GridDrawer(LimitDrawer):
@@ -149,43 +166,113 @@ class GridDrawer(LimitDrawer):
         self.gridAmount = self.height // self.minimalGridHeight
 
     def draw(self, data):
-        self.setMaxMinValue(data)
+        print("Grid drawer:", Drawer.maximalValue, Drawer.minimalValue)
 
-        middlePrice = (self.maximalValue + self.minimalValue) / 2
-        minimalCellHeight = 60
+        gridSettings = NiceScale(Drawer.minimalValue, Drawer.maximalValue)
+        # print("a.lst ", gridSettings.lst)
+        # print("a.maxPoint ", gridSettings.maxPoint)
+        # print("a.maxTicks ", gridSettings.maxTicks)
+        # print("a.minPoint ", gridSettings.minPoint)
+        # print("a.niceMax ", gridSettings.niceMax)
+        # print("a.niceMin ", gridSettings.niceMin)
+        # print("a.tickSpacing ", gridSettings.tickSpacing)
 
-        cellAmount = self.height // minimalCellHeight
+        maximalLength = len(str(Decimal(Drawer.maximalValue) % 1)[:2])
 
+        grid = []
+        for i in range(gridSettings.maxTicks + 1):
+            grid.append(float(Decimal(str(gridSettings.niceMin)) +
+                        Decimal(str(i)) * Decimal(str(gridSettings.tickSpacing))))
 
-        a = NiceScale(self.minimalValue, self.maximalValue)
-        print("a.lst ", a.lst)
-        print("a.maxPoint ", a.maxPoint)
-        print("a.maxTicks ", a.maxTicks)
-        print("a.minPoint ", a.minPoint)
-        print("a.niceMax ", a.niceMax)
-        print("a.niceMin ", a.niceMin)
-        print("a.tickSpacing ", a.tickSpacing)
+        for i in grid:
+            if (len(str(Decimal(str(i)) % 1)) - 2 > maximalLength):
+                maximalLength = len(str(Decimal(str(i)) % 1)) - 2
 
-        for i in range(a.maxTicks + 1):
+        for i in grid:
             pen = QPen(QColor(204, 204, 204, 50), 1)
             self.painter.setPen(pen)
             self.painter.drawLine(
                 0,
-                self.getVerticalPosition(a.niceMin + i * a.tickSpacing),
+                self.getVerticalPosition(i),
                 self.width,
-                self.getVerticalPosition(a.niceMin + i * a.tickSpacing),
+                self.getVerticalPosition(i),
             )
-            # text = str(Decimal(str(a.niceMin)) + Decimal(str(i * a.tickSpacing)))
-            # print("Text: " + text)
-            maximalLength = len(str(Decimal(self.maximalValue) % 1)[:2])
-            text = str(("{0:." + str(maximalLength) + "f}").format(Decimal(str(a.niceMin)) + Decimal(str(i * a.tickSpacing))))
+            text = str(("{0:." + str(maximalLength) + "f}").format(i))
             font = QFont("times", 8)
             fm = QFontMetrics(font)
             pen = QPen(QColor("#fff"), 2)
             self.painter.setPen(pen)
             self.painter.setFont(font)
             self.painter.drawText(self.width - fm.width(text),
-                                (self.getVerticalPosition(a.niceMin + i * a.tickSpacing) - fm.height() / 2), text)
+                                  (self.getVerticalPosition(i) - fm.height() / 2), text)
+
+
+class MaxMinValuesDrawer(Drawer):
+    def __init__(self, painter) -> None:
+        super().__init__(painter)
+
+    def draw(self, data):
+        maximalLength = len(str(Decimal(Drawer.maximalValue) % 1)[:2])
+
+        # maximal point
+        pen = QPen(QColor("#26a69a"), 0.5)
+        self.painter.setPen(pen)
+        self.painter.drawLine(
+            0,
+            self.getVerticalPosition(Drawer.maximalValue),
+            self.width,
+            self.getVerticalPosition(Drawer.maximalValue),
+        )
+        text = str(self.maximalValue)
+        font = QFont("times", 10)
+        fm = QFontMetrics(font)
+        pen = QPen(QColor("#26a69a"), 2)
+        self.painter.setPen(pen)
+        self.painter.setFont(font)
+        self.painter.drawText(0, (self.getVerticalPosition(
+            Drawer.maximalValue) - fm.height() / 2), text)
+
+        # minimal point
+        pen = QPen(QColor("#ef5350"), 0.5)
+        self.painter.setPen(pen)
+        self.painter.drawLine(
+            0,
+            self.getVerticalPosition(Drawer.minimalValue),
+            self.width,
+            self.getVerticalPosition(Drawer.minimalValue),
+        )
+        text = str(self.minimalValue)
+        font = QFont("times", 10)
+        fm = QFontMetrics(font)
+        pen = QPen(QColor("#ef5350"), 2)
+        self.painter.setPen(pen)
+        self.painter.setFont(font)
+        self.painter.drawText(0, (self.getVerticalPosition(
+            self.minimalValue) - fm.height() / 2), text)
+
+
+class LineDrawer(Drawer):
+    def __init__(self, painter) -> None:
+        super().__init__(painter)
+
+    def draw(self, data):
+        vertex = data[0]
+        pen = QPen(QColor(204, 204, 204, 50), 1, QtCore.Qt.DashLine)
+        self.painter.setPen(pen)
+        self.painter.drawLine(
+            0,
+            self.getVerticalPosition(vertex.closePrice),
+            self.width,
+            self.getVerticalPosition(vertex.closePrice),
+        )
+        text = str(vertex.closePrice)
+        font = QFont("times", 12)
+        fm = QFontMetrics(font)
+        pen = QPen(QColor("#fff"), 3)
+        self.painter.setPen(pen)
+        self.painter.setFont(font)
+        self.painter.drawText(self.width - fm.width(text),
+                              (self.getVerticalPosition(vertex.closePrice) - fm.height() / 2), text)
 
 
 class LineChartDrawer(LimitDrawer):
@@ -213,8 +300,8 @@ class LineChartDrawer(LimitDrawer):
     def draw(self, data):
         vertexes_amount = self.getVertexesAmount(
             data, 7, self.width - ChartPositioner.paddingHorizontal)
-        data = data[0:vertexes_amount]
-        self.setMaxMinValue(data)
+        # data = data[0:vertexes_amount]
+        print("Line chart drawer: ", Drawer.maximalValue, Drawer.minimalValue)
         # print(self.maximalValue, self.minimalValue)
 
         for i in range(0, vertexes_amount - 1):
@@ -229,7 +316,6 @@ class LineChartDrawer(LimitDrawer):
                     (i + 1) * 7,
                     self.getVerticalPosition(data[i].openPrice),
                 )
-                self.drawLine(data[0])
                 continue
 
             self.painter.drawLine(
@@ -247,12 +333,9 @@ class CandleChartDrawer(LineChartDrawer):
     def draw(self, data):
         vertexes_amount = self.getVertexesAmount(
             data, data[0].width, self.width)
-        data = data[0:vertexes_amount]
-        self.setMaxMinValue(data)
+        # data = data[0:vertexes_amount]
 
         for i in range(0, vertexes_amount):
-            if (i == 0):
-                self.drawLine(data[0])
 
             pen = QPen(QColor("#26a69a"), data[i].width - 3)
 
@@ -306,6 +389,10 @@ class Chartilo(QWidget):
             print("There is no data to draw")
             return
 
+        Drawer.setMaxMinValue(Chartilo.data)
+
+        LimitDrawer.setDrawableData(LimitDrawer.calculateDrawableData(Chartilo.data, 0, LimitDrawer.getVertexesAmount(Chartilo.data, 7, painter.device().width(), ChartPositioner.paddingHorizontal)))
+
         if (self.states.get("positions") is not None):
             for position in self.states["positions"]:
                 if (position not in ChartPositioner.__dict__):
@@ -320,10 +407,10 @@ class Chartilo(QWidget):
 
         for drawer in self.states["drawers"]:
             try:
-                self.states["drawers"][drawer](painter).draw(Chartilo.data)
+                self.states["drawers"][drawer](painter).draw(LimitDrawer.drawableData)
             except Exception as e:
-                raise Exception(str(e) + 
-                    "\nThere is unexpected drawer: " + str(drawer.__name__))
+                raise Exception(str(e) +
+                                "\nThere is unexpected drawer: " + str(drawer))
 
         painter.end()
 
