@@ -1,5 +1,5 @@
 class Line:
-	width = 9
+	width = 8 
 
 	def __init__(self, data):
 		self.openPrice = float(data[1])

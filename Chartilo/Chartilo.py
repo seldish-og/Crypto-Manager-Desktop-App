@@ -119,7 +119,7 @@ class Drawer:
 
 class ChartPositioner:
     paddingVertical = 120
-    paddingHorizontal = 71
+    paddingHorizontal = 120
 
     @staticmethod
     def setPaddingVertical(padding) -> None:
@@ -139,12 +139,12 @@ class LimitDrawer(Drawer):
 
     @staticmethod
     def getVertexesAmount(vertexes, vertexWidth, screenWidth, horizontalMargin=0) -> int:
-        localMargin = horizontalMargin
-        if (localMargin < 0):
-            localMargin = 0
+        # localMargin = horizontalMargin
+        # if (localMargin < 0):
+        #     localMargin = 0
 
-        if (len(vertexes) > (screenWidth - horizontalMargin) // vertexWidth + 1):
-            return screenWidth // vertexWidth + 1
+        if (len(vertexes) > (screenWidth - horizontalMargin) // vertexWidth):
+            return (screenWidth - horizontalMargin) // vertexWidth
         else:
             return int(len(vertexes))
 
@@ -161,20 +161,16 @@ class GridDrawer(LimitDrawer):
     def __init__(self, painter: QPainter) -> None:
         super().__init__(painter)
 
-        self.minimalGridHeight = 40
-
-        self.gridAmount = self.height // self.minimalGridHeight
-
     def draw(self, data):
 
         gridSettings = NiceScale(Drawer.minimalValue, Drawer.maximalValue)
-        print("a.lst ", gridSettings.lst)
-        print("a.maxPoint ", gridSettings.maxPoint)
-        print("a.maxTicks ", gridSettings.maxTicks)
-        print("a.minPoint ", gridSettings.minPoint)
-        print("a.niceMax ", gridSettings.niceMax)
-        print("a.niceMin ", gridSettings.niceMin)
-        print("a.tickSpacing ", gridSettings.tickSpacing)
+        # print("a.lst ", gridSettings.lst)
+        # print("a.maxPoint ", gridSettings.maxPoint)
+        # print("a.maxTicks ", gridSettings.maxTicks)
+        # print("a.minPoint ", gridSettings.minPoint)
+        # print("a.niceMax ", gridSettings.niceMax)
+        # print("a.niceMin ", gridSettings.niceMin)
+        # print("a.tickSpacing ", gridSettings.tickSpacing)
 
         maximalLength = len(str(Decimal(Drawer.maximalValue) % 1)[:2])
 
@@ -187,7 +183,7 @@ class GridDrawer(LimitDrawer):
             if (len(str(Decimal(str(i)) % 1)) - 2 > maximalLength):
                 maximalLength = len(str(Decimal(str(i)) % 1)) - 2
 
-        print(grid)
+        # print(grid)
 
         for i in grid:
             pen = QPen(QColor(204, 204, 204, 50), 1)
@@ -278,48 +274,27 @@ class LineChartDrawer(LimitDrawer):
     def __init__(self, painter) -> None:
         super().__init__(painter)
 
-    def drawLine(self, vertex):
-        pen = QPen(QColor(204, 204, 204, 50), 1, QtCore.Qt.DashLine)
-        self.painter.setPen(pen)
-        self.painter.drawLine(
-            0,
-            self.getVerticalPosition(vertex.closePrice),
-            self.width,
-            self.getVerticalPosition(vertex.closePrice),
-        )
-        text = str(vertex.closePrice)
-        font = QFont("times", 12)
-        fm = QFontMetrics(font)
-        pen = QPen(QColor("#fff"), 3)
-        self.painter.setPen(pen)
-        self.painter.setFont(font)
-        self.painter.drawText(self.width - fm.width(text),
-                              (self.getVerticalPosition(vertex.closePrice) - fm.height() / 2), text)
-
     def draw(self, data):
-        vertexes_amount = self.getVertexesAmount(
-            data, 7, self.width - ChartPositioner.paddingHorizontal)
-        # data = data[0:vertexes_amount]
-        # print(self.maximalValue, self.minimalValue)
-
-        for i in range(0, vertexes_amount - 1):
+        for i in range(0,  len(LimitDrawer.drawableData)):
             pen = QPen(QColor("#00D3FF"), 3)
             self.painter.setPen(pen)
 
             if (i == 0):
                 self.painter.drawLine(
-                    self.width - ChartPositioner.paddingHorizontal - (i) * 7,
+                    self.width - ChartPositioner.paddingHorizontal -
+                    (i) * VertexesFactory.Type.width,
                     self.getVerticalPosition(data[i].closePrice),
                     self.width - ChartPositioner.paddingHorizontal -
-                    (i + 1) * 7,
+                    (i + 1) * VertexesFactory.Type.width,
                     self.getVerticalPosition(data[i].openPrice),
                 )
                 continue
 
             self.painter.drawLine(
-                self.width - ChartPositioner.paddingHorizontal - i * 7,
+                self.width - ChartPositioner.paddingHorizontal - i * VertexesFactory.Type.width,
                 self.getVerticalPosition(data[i - 1].openPrice),
-                self.width - ChartPositioner.paddingHorizontal - (i + 1) * 7,
+                self.width - ChartPositioner.paddingHorizontal -
+                (i + 1) * VertexesFactory.Type.width,
                 self.getVerticalPosition(data[i].openPrice),
             )
 
@@ -329,25 +304,21 @@ class CandleChartDrawer(LineChartDrawer):
         super().__init__(painter)
 
     def draw(self, data):
-        vertexes_amount = self.getVertexesAmount(
-            data, data[0].width, self.width)
-        # data = data[0:vertexes_amount]
+        for i in range(0, len(LimitDrawer.drawableData)):
 
-        for i in range(0, vertexes_amount):
-
-            pen = QPen(QColor("#26a69a"), data[i].width - 3)
+            pen = QPen(QColor("#26a69a"), VertexesFactory.Type.width - 3)
 
             if (data[i].openPrice > data[i].closePrice):
-                pen = QPen(QColor("#ef5350"), data[i].width - 3)
+                pen = QPen(QColor("#ef5350"), VertexesFactory.Type.width - 3)
 
             self.painter.setPen(pen)
 
             self.painter.drawLine(
                 self.width - ChartPositioner.paddingHorizontal -
-                i * data[i].width,
+                i * VertexesFactory.Type.width,
                 self.getVerticalPosition(data[i].openPrice),
                 self.width - ChartPositioner.paddingHorizontal -
-                (i) * data[i].width,
+                (i) * VertexesFactory.Type.width,
                 self.getVerticalPosition(data[i].closePrice),
             )
 
@@ -356,10 +327,10 @@ class CandleChartDrawer(LineChartDrawer):
 
             self.painter.drawLine(
                 self.width - ChartPositioner.paddingHorizontal -
-                i * data[i].width,
+                i * VertexesFactory.Type.width,
                 self.getVerticalPosition(data[i].minimalPrice),
                 self.width - ChartPositioner.paddingHorizontal -
-                i * data[i].width,
+                i * VertexesFactory.Type.width,
                 self.getVerticalPosition(data[i].maximalPrice),
             )
 
@@ -387,8 +358,8 @@ class Chartilo(QWidget):
             print("There is no data to draw")
             return
 
-
-        LimitDrawer.setDrawableData(LimitDrawer.calculateDrawableData(Chartilo.data, 0, LimitDrawer.getVertexesAmount(Chartilo.data, 7, painter.device().width(), ChartPositioner.paddingHorizontal)))
+        LimitDrawer.setDrawableData(LimitDrawer.calculateDrawableData(Chartilo.data, 0, LimitDrawer.getVertexesAmount(
+            Chartilo.data, VertexesFactory.Type.width, painter.device().width(), ChartPositioner.paddingHorizontal)))
 
         Drawer.setMaxMinValue(LimitDrawer.drawableData)
 
@@ -406,7 +377,8 @@ class Chartilo(QWidget):
 
         for drawer in self.states["drawers"]:
             try:
-                self.states["drawers"][drawer](painter).draw(LimitDrawer.drawableData)
+                self.states["drawers"][drawer](
+                    painter).draw(LimitDrawer.drawableData)
             except Exception as e:
                 raise Exception(str(e) +
                                 "\nThere is unexpected drawer: " + str(drawer))
