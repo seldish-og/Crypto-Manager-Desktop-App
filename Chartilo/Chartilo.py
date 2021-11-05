@@ -212,8 +212,6 @@ class MaxMinValuesDrawer(Drawer):
         super().__init__(painter)
 
     def draw(self, data):
-        maximalLength = len(str(Decimal(Drawer.maximalValue) % 1)[:2])
-
         # maximal point
         pen = QPen(QColor("#26a69a"), 0.5)
         self.painter.setPen(pen)
@@ -389,9 +387,10 @@ class Chartilo(QWidget):
             print("There is no data to draw")
             return
 
-        Drawer.setMaxMinValue(Chartilo.data)
 
         LimitDrawer.setDrawableData(LimitDrawer.calculateDrawableData(Chartilo.data, 0, LimitDrawer.getVertexesAmount(Chartilo.data, 7, painter.device().width(), ChartPositioner.paddingHorizontal)))
+
+        Drawer.setMaxMinValue(LimitDrawer.drawableData)
 
         if (self.states.get("positions") is not None):
             for position in self.states["positions"]:
