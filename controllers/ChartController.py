@@ -4,29 +4,19 @@ import sys
 import asyncio
 import threading
 
-from models.Candle import Candle
-from models.Line import Line
 from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtGui import QPainter, QPen, QPixmap
-from views.MainView import CandleChartDrawer, GridDrawer, LineChartDrawer, Loader, MainView
+from views.MainView import MainView
 
 from repository.ChartRepository import ChartRepository
 import time
 
+from Chartilo import GridDrawer, LineChartDrawer, VertexesFactory, Candle, Line, CandleChartDrawer
 
-class VertexesFactory:
-    Type = Line
 
+class Ass:
     def __init__(self) -> None:
-        self.newVertexes = []
-
-    def createVertex(self, vertex):
-        return type(vertex)
-
-    def createVertexes(self, vertexes):
-        for i in vertexes:
-            self.newVertexes.append(VertexesFactory.Type(i))
-        return self.newVertexes
+        pass
 
 
 class ChartController:
@@ -35,7 +25,6 @@ class ChartController:
         self._app = QtWidgets.QApplication(sys.argv)
 
         self._chartRepository = ChartRepository()
-        self._vertexesFactory = VertexesFactory()
 
         thread_chart_drawer = threading.Thread(target=self._runChart, args=())
         thread_chart_drawer.start()
@@ -43,11 +32,11 @@ class ChartController:
         self._view = MainView()
 
         self.states = {
-            "gridDrawer": GridDrawer,
-            "vertexDrawer": LineChartDrawer,
-        }
+            "drawers": [GridDrawer, LineChartDrawer]
+        } 
 
         self._init()
+
 
     def _init(self):
         self._view.chart.candleChartTypeButton.clicked.connect(
@@ -79,13 +68,10 @@ class ChartController:
         self._view.setCanvasData(data)
         self._view.updateCanvas()
 
-        time.sleep(1)
         self._runChart()
 
-
     def _getChartData(self):
-        data = self._chartRepository.getRemoteData()
-        return self._vertexesFactory.createVertexes(json.loads(data))
+        return json.loads(self._chartRepository.getRemoteData())
 
     def run(self):
         self._view.show()

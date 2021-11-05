@@ -1,4 +1,4 @@
-from models.Line import Line
+from .Line import Line
 
 
 class Candle(Line):
