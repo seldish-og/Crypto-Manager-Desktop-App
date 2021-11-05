@@ -21,11 +21,9 @@ class NiceScale:
         self.calculate()
 
     def calculate(self):
-        self.lst = self.niceNum(self.maxPoint - self.minPoint, False)
-        self.tickSpacing = self.niceNum(
-            self.lst / (self.maxTicks - 1), True)
-        self.niceMin = math.floor(
-            self.minPoint / self.tickSpacing) * self.tickSpacing
+        self.lst = self.niceNum(Decimal(str(self.maxPoint)) - Decimal(str(self.minPoint)), False)
+        self.tickSpacing = self.niceNum(Decimal(str(self.lst)) / (Decimal(str(self.maxTicks)) - Decimal(str(1))), True)
+        self.niceMin = math.floor(Decimal(str(self.minPoint)) / Decimal(str(self.tickSpacing))) * Decimal(str(self.tickSpacing))
         self.niceMax = math.ceil(Decimal(str(
             self.maxPoint)) / Decimal(str(self.tickSpacing))) * Decimal(str(self.tickSpacing))
 
@@ -36,7 +34,7 @@ class NiceScale:
         niceFraction = 0  # nice, rounded fraction */
 
         exponent = math.floor(math.log10(self.lst))
-        fraction = self.lst / math.pow(10, exponent)
+        fraction = Decimal(str(self.lst)) / Decimal(str(math.pow(10, exponent)))
 
         if (self.lst):
             if (fraction < 1.5):
@@ -57,7 +55,7 @@ class NiceScale:
             else:
                 niceFraction = 10
 
-        return niceFraction * math.pow(10, exponent)
+        return Decimal(str(niceFraction)) * Decimal(str(math.pow(10, exponent)))
 
     def setMinMaxPoints(self, minPoint, maxPoint):
         self.minPoint = minPoint
@@ -164,13 +162,13 @@ class GridDrawer(LimitDrawer):
     def draw(self, data):
 
         gridSettings = NiceScale(Drawer.minimalValue, Drawer.maximalValue)
-        # print("a.lst ", gridSettings.lst)
-        # print("a.maxPoint ", gridSettings.maxPoint)
-        # print("a.maxTicks ", gridSettings.maxTicks)
-        # print("a.minPoint ", gridSettings.minPoint)
-        # print("a.niceMax ", gridSettings.niceMax)
-        # print("a.niceMin ", gridSettings.niceMin)
-        # print("a.tickSpacing ", gridSettings.tickSpacing)
+        print("a.lst ", gridSettings.lst)
+        print("a.maxPoint ", gridSettings.maxPoint)
+        print("a.maxTicks ", gridSettings.maxTicks)
+        print("a.minPoint ", gridSettings.minPoint)
+        print("a.niceMax ", gridSettings.niceMax)
+        print("a.niceMin ", gridSettings.niceMin)
+        print("a.tickSpacing ", gridSettings.tickSpacing)
 
         maximalLength = len(str(Decimal(Drawer.maximalValue) % 1)[:2])
 
@@ -183,7 +181,7 @@ class GridDrawer(LimitDrawer):
             if (len(str(Decimal(str(i)) % 1)) - 2 > maximalLength):
                 maximalLength = len(str(Decimal(str(i)) % 1)) - 2
 
-        # print(grid)
+        print(grid)
 
         for i in grid:
             pen = QPen(QColor(204, 204, 204, 50), 1)
