@@ -1,6 +1,7 @@
 import sys
 import json
 import threading
+import time
 
 from PyQt5 import QtCore, QtWidgets
 from views.MainView import MainView
@@ -50,10 +51,12 @@ class ChartController:
     def changeVertexesTypeCandle(self):
         VertexesFactory.Type = Candle
         self.states["drawers"]["vertex"] = CandleChartDrawer
+        self._view.updateCanvas()
 
     def changeVertexesTypeLine(self):
         VertexesFactory.Type = Line
         self.states["drawers"]["vertex"] = LineChartDrawer
+        self._view.updateCanvas()
 
     def changeTypeStamp(self):
         sender = self._view.sender()
@@ -68,6 +71,7 @@ class ChartController:
         self._view.setCanvasData(data)
         self._view.updateCanvas()
 
+        time.sleep(0.1)
         self._runChart()
 
     def _getChartData(self):

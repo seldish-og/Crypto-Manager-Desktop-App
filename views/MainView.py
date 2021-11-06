@@ -17,7 +17,7 @@ class MainView(QMainWindow):
         self._chartilo = Chartilo()
         layout = QVBoxLayout()
         layout.setContentsMargins(0, 0, 0, 0)
-        self.chart.chartFrame.setContentsMargins(0, 0, 0, 0)
+        self.chart.chartFrame.setContentsMargins(10, 10, 10, 10)
         layout.addWidget(self._chartilo)
         self.chart.chartFrame.setLayout(layout)
 

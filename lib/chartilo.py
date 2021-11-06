@@ -20,8 +20,8 @@ class Chartilo(QWidget):
             print("There is no data to draw")
             return
 
-        Limiter.setDrawableData(Limiter.calculateDrawableData(Chartilo.data, 0, Limiter.getVertexesAmount(
-            Chartilo.data, VertexesFactory.Type.width, painter.device().width(), ChartPositioner.paddingHorizontal)))
+        Limiter.setDrawableData(Limiter.calculateDrawableData(Chartilo.parsedData, 0, Limiter.getVertexesAmount(
+            Chartilo.parsedData, VertexesFactory.Type.width, painter.device().width(), ChartPositioner.paddingHorizontal)))
 
         if (not Limiter.drawableData):
             return
@@ -51,10 +51,11 @@ class Chartilo(QWidget):
         painter.end()
 
     def updateCanvas(self):
+        Chartilo.parsedData = VertexesFactory().createVertexes(Chartilo.data)
         self.update()
 
     def setData(self, data):
-        Chartilo.data = VertexesFactory().createVertexes(data)
+        Chartilo.data = data
 
     def setStates(self, states):
         self.states = states
