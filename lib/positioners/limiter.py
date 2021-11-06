@@ -1,5 +1,6 @@
 class Limiter:
     drawableData = []
+    vertexesOffset = 0
 
     @staticmethod
     def getVertexesAmount(vertexes, vertexWidth, screenWidth, horizontalMargin=0) -> int:
