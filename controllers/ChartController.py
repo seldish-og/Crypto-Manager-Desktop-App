@@ -9,7 +9,9 @@ from repository.Connection import Connection
 from PyQt5.QtGui import QPainter, QPen, QPixmap
 from repository.ChartRepository import ChartRepository
 
-from lib import GridDrawer, LineChartDrawer, VertexesFactory, Candle, Line, CandleChartDrawer, MaxMinValuesDrawer, LineDrawer
+from lib.drawers import GridDrawer, LineChartDrawer, MaxMinValuesDrawer, LineDrawer, CandleChartDrawer
+from lib.factories import VertexesFactory
+from lib.models import Line, Candle
 
 
 class ChartController:
