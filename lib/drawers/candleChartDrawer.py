@@ -1,6 +1,5 @@
 from . import Drawer
 from ..positioners import Limiter, ChartPositioner
-from ..factories import VertexesFactory
 from PyQt5.QtGui import QColor, QFont, QFontMetrics, QPainter, QPen
 
 
@@ -11,19 +10,19 @@ class CandleChartDrawer(Drawer):
     def draw(self, data):
         for i in range(0, len(Limiter.drawableData)):
 
-            pen = QPen(QColor("#26a69a"), VertexesFactory.Type.width - 3)
+            pen = QPen(QColor("#26a69a"), data[i].width - 3)
 
             if (data[i].openPrice > data[i].closePrice):
-                pen = QPen(QColor("#ef5350"), VertexesFactory.Type.width - 3)
+                pen = QPen(QColor("#ef5350"), data[i].width - 3)
 
             self.painter.setPen(pen)
 
             self.painter.drawLine(
                 self.width - ChartPositioner.paddingHorizontal -
-                i * VertexesFactory.Type.width,
+                i * data[i].width,
                 self.getVerticalPosition(data[i].openPrice),
                 self.width - ChartPositioner.paddingHorizontal -
-                (i) * VertexesFactory.Type.width,
+                (i) * data[i].width,
                 self.getVerticalPosition(data[i].closePrice),
             )
 
@@ -32,9 +31,9 @@ class CandleChartDrawer(Drawer):
 
             self.painter.drawLine(
                 self.width - ChartPositioner.paddingHorizontal -
-                i * VertexesFactory.Type.width,
+                i * data[i].width,
                 self.getVerticalPosition(data[i].minimalPrice),
                 self.width - ChartPositioner.paddingHorizontal -
-                i * VertexesFactory.Type.width,
+                i * data[i].width,
                 self.getVerticalPosition(data[i].maximalPrice),
             )
