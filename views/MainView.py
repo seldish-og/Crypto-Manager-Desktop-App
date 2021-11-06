@@ -1,4 +1,4 @@
-from Chartilo import Chartilo
+from lib import Chartilo
 
 from PyQt5.QtWidgets import QApplication, QBoxLayout, QMainWindow, QVBoxLayout, QWidget
 from res.dist.templates.Chart import Ui_MainWindow as Chart

@@ -1,23 +1,15 @@
-import json
-from Chartilo.Chartilo import MaxMinValuesDrawer
-from repository.Connection import Connection
 import sys
-import asyncio
+import json
 import threading
 
 from PyQt5 import QtCore, QtWidgets
-from PyQt5.QtGui import QPainter, QPen, QPixmap
 from views.MainView import MainView
 
+from repository.Connection import Connection
+from PyQt5.QtGui import QPainter, QPen, QPixmap
 from repository.ChartRepository import ChartRepository
-import time
 
-from Chartilo import GridDrawer, LineChartDrawer, VertexesFactory, Candle, Line, CandleChartDrawer, MaxMinValuesDrawer, LineDrawer
-
-
-class Ass:
-    def __init__(self) -> None:
-        pass
+from lib import GridDrawer, LineChartDrawer, VertexesFactory, Candle, Line, CandleChartDrawer, MaxMinValuesDrawer, LineDrawer
 
 
 class ChartController:
