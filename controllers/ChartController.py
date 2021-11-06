@@ -48,6 +48,8 @@ class ChartController:
             if isinstance(i, QtWidgets.QPushButton):
                 i.clicked.connect(self.changeTypeStamp)
 
+    # def _move
+
     def changeVertexesTypeCandle(self):
         VertexesFactory.Type = Candle
         self.states["drawers"]["vertex"] = CandleChartDrawer

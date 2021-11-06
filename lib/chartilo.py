@@ -1,3 +1,5 @@
+from PyQt5 import QtGui
+from PyQt5 import QtWidgets
 from .drawers import Drawer
 from .positioners import Limiter, ChartPositioner
 from .models import Line, Candle
@@ -13,15 +15,15 @@ class Chartilo(QWidget):
         super(Chartilo, self).__init__()
 
     def paintEvent(self, event) -> None:
-        painter = QPainter()
-        painter.begin(self)
+        self.painter = QPainter()
+        self.painter.begin(self)
 
         if Chartilo.data == None or not Chartilo.data:
             print("There is no data to draw")
             return
 
         Limiter.setDrawableData(Limiter.calculateDrawableData(Chartilo.parsedData, 0, Limiter.getVertexesAmount(
-            Chartilo.parsedData, VertexesFactory.Type.width, painter.device().width(), ChartPositioner.paddingHorizontal)))
+            Chartilo.parsedData, VertexesFactory.Type.width, self.painter.device().width(), ChartPositioner.paddingHorizontal)))
 
         if (not Limiter.drawableData):
             return
@@ -43,12 +45,12 @@ class Chartilo(QWidget):
         for drawer in self.states["drawers"]:
             try:
                 self.states["drawers"][drawer](
-                    painter).draw(Limiter.drawableData)
+                    self.painter).draw(Limiter.drawableData)
             except Exception as e:
                 raise Exception(str(e) +
                                 "\nThere is unexpected drawer: " + str(drawer))
 
-        painter.end()
+        self.painter.end()
 
     def updateCanvas(self):
         Chartilo.parsedData = VertexesFactory().createVertexes(Chartilo.data)
@@ -59,3 +61,29 @@ class Chartilo(QWidget):
 
     def setStates(self, states):
         self.states = states
+
+    def mousePressEvent(self, event):
+        print("Pressed")
+        self.beginPosition = int(event.x())
+        self.previousMove = self.beginPosition
+
+    def mouseMoveEvent(self, event):
+        motion = int(event.x())
+
+        if (motion > self.previousMove):
+            if (not ChartPositioner.paddingHorizontal < 0):
+                ChartPositioner.paddingHorizontal -= VertexesFactory.Type.width
+            else:
+                Limiter.setDrawableData(Limiter.calculateDrawableData(Chartilo.parsedData, 0, Limiter.getVertexesAmount(
+                    Chartilo.parsedData, VertexesFactory.Type.width, self.painter.device().width(), ChartPositioner.paddingHorizontal)))
+
+        if (motion < self.previousMove):
+            if (ChartPositioner.paddingHorizontal < ChartPositioner.maximalHorizontalPadding):
+                ChartPositioner.paddingHorizontal += VertexesFactory.Type.width
+        self.previousMove = motion
+
+        self.update()
+
+    def mouseReleaseEvent(self, event):
+        print("Released")
+        self.endPosition = event.x()
