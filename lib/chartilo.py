@@ -21,6 +21,7 @@ class Chartilo(QWidget):
 
         if Chartilo.data == None or not Chartilo.data:
             print("There is no data to draw")
+            self.painter.end()
             return
 
         vertexesAmount = Limiter.getVertexesAmount(Chartilo.parsedData, VertexesFactory.Type.width, self.painter.device().width(), ChartPositioner.paddingHorizontal) + Limiter.vertexesOffset // VertexesFactory.Type.width
