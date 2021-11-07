@@ -1,6 +1,7 @@
 from PyQt5.QtGui import QColor, QPen
 from . import Drawer
 from ..positioners import ChartPositioner, Limiter
+from ..themes import ThemeHolder
 
 class LineChartDrawer(Drawer):
     def __init__(self, painter) -> None:
@@ -8,7 +9,7 @@ class LineChartDrawer(Drawer):
 
     def draw(self, data):
         for i in range(0,  len(Limiter.drawableData)):
-            pen = QPen(QColor("#00D3FF"), 3)
+            pen = QPen(QColor(ThemeHolder.theme.chartLineColor), 3)
             self.painter.setPen(pen)
 
             if (i == 0):

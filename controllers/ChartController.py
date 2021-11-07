@@ -28,6 +28,7 @@ class ChartController:
         self._view = MainView()
 
         self.states = {
+            "type": Line,
             "drawers": {
                 "grid" : GridDrawer, 
                 "vertex" : LineChartDrawer,
@@ -51,12 +52,12 @@ class ChartController:
     # def _move
 
     def changeVertexesTypeCandle(self):
-        VertexesFactory.Type = Candle
+        self.states["type"] = Candle
         self.states["drawers"]["vertex"] = CandleChartDrawer
         self._view.updateCanvas()
 
     def changeVertexesTypeLine(self):
-        VertexesFactory.Type = Line
+        self.states["type"] = Line
         self.states["drawers"]["vertex"] = LineChartDrawer
         self._view.updateCanvas()
 

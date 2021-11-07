@@ -3,6 +3,7 @@ from decimal import Decimal
 
 from PyQt5.QtGui import QColor, QFont, QFontMetrics, QPainter, QPen
 from . import Drawer
+from ..themes import ThemeHolder
 
 
 class NiceScale:
@@ -94,7 +95,7 @@ class GridDrawer(Drawer):
 
 
         for i in grid:
-            pen = QPen(QColor(204, 204, 204, 50), 1)
+            pen = QPen(QColor(ThemeHolder.theme.gridLineColor), 1)
             self.painter.setPen(pen)
             self.painter.drawLine(
                 0,
@@ -105,7 +106,7 @@ class GridDrawer(Drawer):
             text = str(("{0:." + str(maximalLength) + "f}").format(i))
             font = QFont("times", 8)
             fm = QFontMetrics(font)
-            pen = QPen(QColor("#fff"), 2)
+            pen = QPen(QColor(ThemeHolder.theme.textColor), 2)
             self.painter.setPen(pen)
             self.painter.setFont(font)
             self.painter.drawText(self.width - fm.width(text),
