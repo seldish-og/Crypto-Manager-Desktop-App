@@ -16,7 +16,7 @@ Chartilo is the open-source app which allow you to draw charts in realtime. As w
 
 &nbsp;
 
-> Note `develpers only`
+> Note `developeres only`
 
 ## Tech
 
