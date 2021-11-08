@@ -1,3 +1,4 @@
+import re
 import sys
 import json
 import threading
@@ -13,6 +14,8 @@ from repository.ChartRepository import ChartRepository
 from chartilo.drawers import GridDrawer, LineChartDrawer, MaxMinValuesDrawer, LineDrawer, CandleChartDrawer
 from chartilo.factories import VertexesFactory
 from chartilo.models import Line, Candle
+
+from PyQt5.QtWidgets import QInputDialog
 
 
 class ChartController:
@@ -39,8 +42,16 @@ class ChartController:
 
         self._init()
 
+    def changeCurrencySymbol(self):
+        symbol, ok_pressed = QInputDialog.getText(self._view, "Input", "Enter symbos ex: btcusdt")
+        if (ok_pressed):
+            symbol = symbol.upper()
+            Connection.PREVIOUS_CHART_URL = Connection.FETCH_CHART_URL
+            Connection.FETCH_CHART_URL = re.sub(r"symbol=[A-Z]+", "symbol=" + symbol, Connection.FETCH_CHART_URL)
+
 
     def _init(self):
+        self._view.chart.symbol.clicked.connect(self.changeCurrencySymbol)
         self._view.chart.candleChartTypeButton.clicked.connect(
             self.changeVertexesTypeCandle)
         self._view.chart.lineChartTypeButton.clicked.connect(
@@ -68,6 +79,13 @@ class ChartController:
     def _runChart(self):
 
         data = self._getChartData()
+        # print(data)
+        if (type(data) is dict):
+            Connection.FETCH_CHART_URL = Connection.PREVIOUS_CHART_URL
+            print(Connection.FETCH_CHART_URL, Connection.PREVIOUS_CHART_URL)
+            self._runChart()
+
+        self._view.chart.symbol.setText(re.search(r"symbol.(.*&)", Connection.FETCH_CHART_URL).group().replace("symbol=", "").replace("&", ""))
         data.reverse()
 
         self._view.setCanvasStates(self.states)

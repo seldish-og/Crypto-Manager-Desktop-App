@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'c:\Users\79533\Documents\Crypto-Manager-Desktop\res\src\templates\chart.ui'
+# Form implementation generated from reading ui file 'c:\Users\79533\Desktop\Crypto-Manager-Desktop-App\res\src\templates\chart.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -48,10 +48,10 @@ class Ui_MainWindow(object):
         self.logo.setPixmap(QtGui.QPixmap(":/images/logo.png"))
         self.logo.setObjectName("logo")
         self.verticalLayout_2.addWidget(self.logo, 0, QtCore.Qt.AlignHCenter|QtCore.Qt.AlignTop)
-        self.symbol = QtWidgets.QLabel(self.currencyFrame)
-        self.symbol.setStyleSheet("margin-bottom: 36px;")
+        self.symbol = QtWidgets.QPushButton(self.currencyFrame)
+        self.symbol.setStyleSheet("margin-bottom: 35px;")
         self.symbol.setObjectName("symbol")
-        self.verticalLayout_2.addWidget(self.symbol, 0, QtCore.Qt.AlignHCenter)
+        self.verticalLayout_2.addWidget(self.symbol)
         self.verticalLayout.addWidget(self.currencyFrame, 0, QtCore.Qt.AlignHCenter|QtCore.Qt.AlignTop)
         self.timestampFrame = QtWidgets.QFrame(self.frame)
         self.timestampFrame.setStyleSheet("QPushButton {\n"
@@ -159,7 +159,7 @@ class Ui_MainWindow(object):
         self.dayTimestampButton.setText(_translate("MainWindow", "1d"))
         self.fourHourTimestampButton.setText(_translate("MainWindow", "4h"))
         self.hourTimestampButton.setText(_translate("MainWindow", "1h"))
-        self.hourTimestampButton.setFocus()
         self.minuteTimestampButton.setText(_translate("MainWindow", "1m"))
+
 
 from ..img import resources

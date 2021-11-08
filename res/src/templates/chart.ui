@@ -105,10 +105,10 @@ margin-top: 6px;</string>
             </property>
            </widget>
           </item>
-          <item alignment="Qt::AlignHCenter">
-           <widget class="QLabel" name="symbol">
+          <item>
+           <widget class="QPushButton" name="symbol">
             <property name="styleSheet">
-             <string notr="true">margin-bottom: 36px;</string>
+             <string notr="true">margin-bottom: 35px;</string>
             </property>
             <property name="text">
              <string>BTCUSDT</string>
