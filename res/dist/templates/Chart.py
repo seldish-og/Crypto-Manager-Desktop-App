@@ -153,7 +153,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Crypto-manager-desktop"))
         self.symbol.setText(_translate("MainWindow", "BTCUSDT"))
         self.dayThreeTimestampButton.setText(_translate("MainWindow", "3d"))
         self.dayTimestampButton.setText(_translate("MainWindow", "1d"))
