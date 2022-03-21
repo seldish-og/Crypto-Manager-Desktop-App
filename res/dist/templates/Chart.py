@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'c:\Users\79533\Desktop\Crypto-Manager-Desktop-App\res\src\templates\chart.ui'
+# Form implementation generated from reading ui file 'res\src\templates\chart.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -24,7 +24,8 @@ class Ui_MainWindow(object):
         self.horizontalLayout.setSpacing(0)
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.frame = QtWidgets.QFrame(self.centralwidget)
-        self.frame.setMaximumSize(QtCore.QSize(56, 16777215))
+        self.frame.setMinimumSize(QtCore.QSize(53, 0))
+        self.frame.setMaximumSize(QtCore.QSize(60, 16777215))
         self.frame.setStyleSheet("color: #fff;")
         self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
@@ -136,6 +137,52 @@ class Ui_MainWindow(object):
         self.sidebarLine.setObjectName("sidebarLine")
         self.verticalLayout_5.addWidget(self.sidebarLine)
         self.horizontalLayout.addWidget(self.lineFrame, 0, QtCore.Qt.AlignLeft)
+        self.symbols = QtWidgets.QFrame(self.centralwidget)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.symbols.sizePolicy().hasHeightForWidth())
+        self.symbols.setSizePolicy(sizePolicy)
+        self.symbols.setMinimumSize(QtCore.QSize(200, 0))
+        self.symbols.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.symbols.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.symbols.setObjectName("symbols")
+        self.verticalLayout_6 = QtWidgets.QVBoxLayout(self.symbols)
+        self.verticalLayout_6.setObjectName("verticalLayout_6")
+        self.symbolInput = QtWidgets.QLineEdit(self.symbols)
+        self.symbolInput.setStyleSheet("border-bottom: 2px solid white;\n"
+"color: white;\n"
+"padding-bottom: 2px;\n"
+"font-size: 14px;")
+        self.symbolInput.setObjectName("symbolInput")
+        self.verticalLayout_6.addWidget(self.symbolInput)
+        self.scrollArea = QtWidgets.QScrollArea(self.symbols)
+        self.scrollArea.setWidgetResizable(True)
+        self.scrollArea.setObjectName("scrollArea")
+        self.scrollAreaWidgetContents = QtWidgets.QWidget()
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 182, 553))
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.scrollAreaWidgetContents.sizePolicy().hasHeightForWidth())
+        self.scrollAreaWidgetContents.setSizePolicy(sizePolicy)
+        self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
+        self.verticalLayout_7 = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents)
+        self.verticalLayout_7.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_7.setSpacing(0)
+        self.verticalLayout_7.setObjectName("verticalLayout_7")
+        self.appendHere = QtWidgets.QFrame(self.scrollAreaWidgetContents)
+        self.appendHere.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.appendHere.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.appendHere.setObjectName("appendHere")
+        self.verticalLayout_8 = QtWidgets.QVBoxLayout(self.appendHere)
+        self.verticalLayout_8.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_8.setSpacing(0)
+        self.verticalLayout_8.setObjectName("verticalLayout_8")
+        self.verticalLayout_7.addWidget(self.appendHere, 0, QtCore.Qt.AlignTop)
+        self.scrollArea.setWidget(self.scrollAreaWidgetContents)
+        self.verticalLayout_6.addWidget(self.scrollArea)
+        self.horizontalLayout.addWidget(self.symbols)
         self.chartFrame = QtWidgets.QFrame(self.centralwidget)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
@@ -153,13 +200,13 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "Crypto-manager-desktop"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.symbol.setText(_translate("MainWindow", "BTCUSDT"))
         self.dayThreeTimestampButton.setText(_translate("MainWindow", "3d"))
         self.dayTimestampButton.setText(_translate("MainWindow", "1d"))
         self.fourHourTimestampButton.setText(_translate("MainWindow", "4h"))
         self.hourTimestampButton.setText(_translate("MainWindow", "1h"))
         self.minuteTimestampButton.setText(_translate("MainWindow", "1m"))
-
+        self.symbolInput.setText(_translate("MainWindow", "BTCUSDT"))
 
 from ..img import resources

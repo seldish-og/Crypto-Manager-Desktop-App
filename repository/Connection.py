@@ -3,6 +3,7 @@ import re
 class Connection:
 	FETCH_CHART_URL = "https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=1h"
 	PREVIOUS_CHART_URL = "https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=1h"
+	SYMBOLS_URL = "https://api3.binance.com/api/v3/ticker/price"
 
 	def __init__(self) -> None:
 		pass

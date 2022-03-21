@@ -13,3 +13,7 @@ class ChartRepository(Repository):
     def getRemoteData(self) -> str:
         response = requests.get(Connection.FETCH_CHART_URL)
         return response.content
+
+    def getRemoteSymbols(self) -> str:
+        response = requests.get(Connection.SYMBOLS_URL)
+        return response.content
