@@ -1,5 +1,5 @@
-from controllers import ChartController
 import sys
+from controllers import ChartController
 
 from PyQt5.QtWidgets import QApplication
 from views.MainView import MainView
