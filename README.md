@@ -40,7 +40,7 @@ Install the dependency.
 
 ```sh
 pip install chartilo
-pip insatll requests
+pip install requests
 ```
 you can browse all dependencies in the requirements.txt file
 you can create with [chartilo](https://github.com/hyper-hronoz/Chartilo) library whatever you want
